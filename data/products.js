@@ -1,13 +1,13 @@
 import FormatCurrency from '../scripts/utilis/money.js';
 
-export function GetProduct(productId){
+export function GetProduct(productId) {
   let matchingProduct;
-    products.forEach((product) => {
-      if (product.id === productId) {
-        matchingProduct = product;
-      }
-    });
-    return matchingProduct;
+  products.forEach((product) => {
+    if (product.id === productId) {
+      matchingProduct = product;
+    }
+  });
+  return matchingProduct;
 }
 class Product {
   id;
@@ -15,18 +15,35 @@ class Product {
   name;
   rating;
   priceCents;
-  constructor(productDetails){
-    this.id =productDetails.id
+  constructor(productDetails) {
+    this.id = productDetails.id
     this.image = productDetails.image
     this.name = productDetails.name
     this.rating = productDetails.rating
     this.priceCents = productDetails.priceCents
   }
-  getStarsUrl(){
-    return `images/ratings/rating-${this.rating.stars*10}.png`
+  getStarsUrl() {
+    return `images/ratings/rating-${this.rating.stars * 10}.png`
   }
-  getPrice(){
+  getPrice() {
     return `$${FormatCurrency((this.priceCents))}`
+  }
+  extraInfoHTML() {
+    return '';
+  }
+}
+class Clothing extends Product {
+  sizeChartLink;
+  constructor(productDetails) {
+    super(productDetails);
+    this.sizeChartLink = productDetails.sizeChartLink;
+  }
+  extraInfoHTML() {
+    return `
+      <a href="${this.sizeChartLink}" target="_blank">
+      Size chart
+      </a>
+    `;
   }
 }
 export const products = [
@@ -688,6 +705,9 @@ export const products = [
       "mens"
     ]
   }
-].map((productDetails) =>{
+].map((productDetails) => {
+  if (productDetails.type === 'clothing') {
+
+  }
   return new Product(productDetails);
 });
